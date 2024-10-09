@@ -1,11 +1,11 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
+import Hero from "./components/Hero/HeroContent";
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <h1>first page</h1>,
+      element: <Hero />,
     },
   ]);
   return (
