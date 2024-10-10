@@ -1,4 +1,3 @@
-import "./App.css";
 import {
   BrowserRouter as Router,
   Route,
@@ -12,7 +11,7 @@ import Networking from "./components/Networking/Networking";
 
 function App() {
   return (
-    <Router>
+    <Router >
       <Hero />
       <Routes>
         <Route path="/" element={<Navigate to="/event-details" />} />
