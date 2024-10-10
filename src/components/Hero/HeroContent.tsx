@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { MdLocationOn } from "react-icons/md";
 import { FaBars } from "react-icons/fa";
+import { GoDotFill } from "react-icons/go";
 import HeroImage from "./images/CTY_event_banner.png";
 
 /* Hero Figure Component */
@@ -34,7 +35,7 @@ const HeroFigure: React.FC = () => {
         fontSize={theme.fontSizes.xl}
         top={4}
         left={4}
-        bg="#EBF2FF"
+        bg={theme.colors.hamburgerMenuBgColor}
         color={theme.colors.topNavIconsColor}
         _hover={{
           bg: "white",
@@ -49,18 +50,21 @@ const HeroFigure: React.FC = () => {
         bottom={0}
         left={0}
         right={0}
-        p={2}
+        py={4}
         px={4}
-        alignItems={"center"}
-        justifyContent={"space-between"}
+        alignItems="center"
+        justifyContent="space-between"
         color={theme.colors.topNavColor}
         bg="rgba(0, 0, 0, 0.5)"
       >
         <HStack>
-          <MdLocationOn size={20} />
+          <MdLocationOn size={theme.fontSizes.xl} />
           <Text>22 Kilamjaro Road. V.I. Lagos.</Text>
         </HStack>
-        <Text>Wed, Jul 24 - 8:00am</Text>
+        <HStack>
+          <GoDotFill size={theme.fontSizes.xl} />
+          <Text>Wed, Jul 24 - 8:00am</Text>
+        </HStack>
       </Flex>
     </Box>
   );
@@ -68,6 +72,7 @@ const HeroFigure: React.FC = () => {
 
 /* Hero Text Component */
 const HeroTextContent: React.FC = () => {
+  const theme = useTheme();
   const location = useLocation();
 
   // Array of event details with corresponding links
@@ -78,12 +83,21 @@ const HeroTextContent: React.FC = () => {
   ];
 
   return (
-    <Box px={4} color="#0D2755" bg="#EFE7FD">
+    <Box
+      px={4}
+      color={theme.colors.colorWorkSpace}
+      bg={theme.colors.heroBgColor}
+    >
       <Box px={4}>
-        <Heading as="h2" fontWeight="bold" lineHeight="25px" py={4}>
+        <Heading
+          as="h2"
+          fontSize={theme.fontSizes["2xl"]}
+          lineHeight="25px"
+          py={4}
+        >
           The CTY Food Festival 2024
         </Heading>
-        <Text fontWeight="500" lineHeight="24px">
+        <Text fontWeight="500" fontSize={theme.fontSizes.md} lineHeight="24px">
           This is a song of thanks to the One who fights for us even in our
           weakness and sets us free to worship him. This song has been reviving
           us as a community. Read more
@@ -96,10 +110,11 @@ const HeroTextContent: React.FC = () => {
           <Box
             key={index}
             borderBottom={`6px solid ${
-              location.pathname === item.path ? "#9B0EED" : "transparent"
+              location.pathname === item.path
+                ? theme.colors.purpleTextColor
+                : "transparent"
             }`}
             transition="border-bottom 0.3s"
-            borderRadius="5px"
             w="fit-content"
             textAlign="center"
             _hover={{
@@ -110,8 +125,13 @@ const HeroTextContent: React.FC = () => {
             <Link to={item.path}>
               <Text
                 fontWeight="bold"
+                fontSize={theme.fontSizes.md}
                 p={4}
-                color={location.pathname === item.path ? "#9B0EED" : ""}
+                color={
+                  location.pathname === item.path
+                    ? theme.colors.purpleTextColor
+                    : theme.colors.colorWorkSpace
+                }
               >
                 {item.name}
               </Text>
