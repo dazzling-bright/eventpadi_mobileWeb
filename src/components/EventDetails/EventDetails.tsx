@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { Box, Heading, Text, Flex, Icon, useTheme } from "@chakra-ui/react";
 import {
-  MdAnnouncement,
-  MdSchedule,
-  MdPeople,
   MdGroup,
   MdBusiness,
   MdEventAvailable,
   MdPhoto,
-  MdStore,
-  MdLibraryBooks,
   MdChevronRight,
+  MdBookmarkBorder,
 } from "react-icons/md";
+import { HiOutlineSpeakerWave } from "react-icons/hi2";
+import { RiShoppingBag4Line } from "react-icons/ri";
+import { GiPublicSpeaker } from "react-icons/gi";
+import { FaFileAlt } from "react-icons/fa";
 
 const EventDetails: React.FC = () => {
   const theme = useTheme();
@@ -21,19 +21,19 @@ const EventDetails: React.FC = () => {
     {
       title: "Announcements",
       description: "All event announcements",
-      icon: MdAnnouncement,
+      icon: HiOutlineSpeakerWave,
       count: 32,
     },
     {
       title: "Agenda",
       description: "Scheduled sessions",
-      icon: MdSchedule,
+      icon: FaFileAlt,
       count: 12,
     },
     {
       title: "Speakers",
       description: "All event speakers",
-      icon: MdPeople,
+      icon: GiPublicSpeaker,
       count: 3,
     },
     {
@@ -57,7 +57,7 @@ const EventDetails: React.FC = () => {
     {
       title: "Resources",
       description: "Resources available",
-      icon: MdLibraryBooks,
+      icon: MdBookmarkBorder,
       count: 0,
     },
     {
@@ -69,7 +69,7 @@ const EventDetails: React.FC = () => {
     {
       title: "Vendors",
       description: "Available vendors to engage",
-      icon: MdStore,
+      icon: RiShoppingBag4Line,
       count: 3,
     },
   ];
@@ -102,7 +102,7 @@ const EventDetails: React.FC = () => {
                 as={item.icon}
                 boxSize={8}
                 borderRadius="full"
-                color="#22577A"
+                color={theme.colors.colorWorkSpace}
                 mr={4}
                 bg={theme.colors.heroBgColor}
                 p={2}
