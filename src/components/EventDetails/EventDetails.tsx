@@ -84,15 +84,17 @@ const EventDetails: React.FC = () => {
   return (
     <Box p={4}>
       {eventDetails.map((item, index) => (
-        <Box key={index}>
+        <Box
+          key={index}
+          borderBlockEndWidth="1px"
+          borderBlockEndColor={theme.colors.primaryBorderColor}
+        >
           <Flex
             color={theme.colors.colorWorkSpace}
             alignItems="center"
             justifyContent="space-between"
             p={4}
             bg={theme.colors.topNavColor}
-            borderBlockEndWidth="1px"
-            borderBlockEndColor={theme.colors.primaryBorderColor}
             transition="background-color 0.3s"
             _hover={{ bg: theme.colors.heroBgColor, cursor: "pointer" }}
             onClick={() => handleToggle(index)}
@@ -125,8 +127,7 @@ const EventDetails: React.FC = () => {
               }}
             />
           </Flex>
-
-          <Box borderRadius="md" overflow="hidden">
+          <Box borderRadius="md" overflow="hidden" pl={14}>
             {expandedIndex === index && (
               <Text
                 p={expandedIndex === index ? "10px" : "0"}

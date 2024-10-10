@@ -3,7 +3,6 @@ import {
   Box,
   Text,
   Flex,
-  Icon,
   HStack,
   Input,
   InputGroup,
@@ -11,21 +10,58 @@ import {
   IconButton,
   Checkbox,
   useTheme,
+  Image,
 } from "@chakra-ui/react";
 import { LuSlidersHorizontal } from "react-icons/lu";
-import { MdPerson, MdSearch } from "react-icons/md";
+import { MdSearch } from "react-icons/md";
+import JasonImage from "./images/jason.png";
+import HarryImage from "./images/harry.png";
+import GeorgeImage from "./images/george.png";
+import FelixImage from "./images/felix.png";
+import RayBanImage from "./images/rayBan.png";
+import JasonTwoImage from "./images/jason2.png";
 
 const Networking: React.FC = () => {
   const theme = useTheme();
 
   // List of networking contacts
   const networkContacts = [
-    { name: "Jason Ozah", title: "HR Manager", company: "Bizzabo Limited" },
-    { name: "Emma Stone", title: "HR Manager", company: "Bizzabo Limited" },
-    { name: "Liam Carter", title: "Developer", company: "Bizzabo Limited" },
-    { name: "Sophia Green", title: "HR Manager", company: "Bizzabo Limited" },
-    { name: "David Miller", title: "Developer", company: "Bizzabo Limited" },
-    { name: "Jason Ozah", title: "Designer", company: "Bizzabo Limited" },
+    {
+      name: "Jason Ozah",
+      title: "HR Manager",
+      company: "Bizzabo Limited",
+      image: JasonImage,
+    },
+    {
+      name: "Harry Jully",
+      title: "HR Manager",
+      company: "Bizzabo Limited",
+      image: HarryImage,
+    },
+    {
+      name: "Liam Carter",
+      title: "HR Manager",
+      company: "Bizzabo Limited",
+      image: GeorgeImage,
+    },
+    {
+      name: "Sophia Green",
+      title: "HR Manager",
+      company: "Bizzabo Limited",
+      image: FelixImage,
+    },
+    {
+      name: "David Miller",
+      title: "HR Manager",
+      company: "Bizzabo Limited",
+      image: RayBanImage,
+    },
+    {
+      name: "Jason Ozah",
+      title: "HR Manager",
+      company: "Bizzabo Limited",
+      image: JasonTwoImage,
+    },
   ];
 
   // State to hold the search input and filtered contacts
@@ -126,10 +162,13 @@ const Networking: React.FC = () => {
           transition="backgroundColor 0.3s ease-in-out"
         >
           <HStack spacing={4}>
-            <Icon
-              as={MdPerson}
-              boxSize={6}
-              color={theme.colors.purpleTextColor}
+            <Image
+              src={contact.image}
+              w="60px"
+              h="60px"
+              
+              objectFit="cover"
+              borderRadius="10px"
             />
             <Box>
               <Text fontWeight="bold" fontSize={theme.fontSizes.md}>

@@ -13,7 +13,7 @@ import { MdLocationOn } from "react-icons/md";
 import { FaBars } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
 import HeroImage from "./images/CTY_event_banner.png";
-import { useState } from "react"; // Import useState
+import { useState } from "react";
 
 /* Hero Figure Component */
 const HeroFigure: React.FC = () => {
@@ -75,7 +75,7 @@ const HeroFigure: React.FC = () => {
 const HeroTextContent: React.FC = () => {
   const theme = useTheme();
   const location = useLocation();
-  const [isExpanded, setIsExpanded] = useState(false); // State for toggling text
+  const [isExpanded, setIsExpanded] = useState(false); // State for toggling Herocontent text
 
   // Array of event details with corresponding links
   const details = [
