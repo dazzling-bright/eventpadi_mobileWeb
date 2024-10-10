@@ -9,50 +9,68 @@ import {
   InputGroup,
   InputLeftElement,
   IconButton,
+  Checkbox,
+  useTheme,
 } from "@chakra-ui/react";
 import { LuSlidersHorizontal } from "react-icons/lu";
 import { MdPerson, MdSearch } from "react-icons/md";
 
 const Networking: React.FC = () => {
+  const theme = useTheme();
+
   // List of networking contacts
   const networkContacts = [
     { name: "Jason Ozah", title: "HR Manager", company: "Bizzabo Limited" },
     { name: "Emma Stone", title: "HR Manager", company: "Bizzabo Limited" },
-    { name: "Liam Carter", title: "HR Manager", company: "Bizzabo Limited" },
+    { name: "Liam Carter", title: "Developer", company: "Bizzabo Limited" },
     { name: "Sophia Green", title: "HR Manager", company: "Bizzabo Limited" },
-    { name: "David Miller", title: "HR Manager", company: "Bizzabo Limited" },
-    { name: "Jason Ozah", title: "HR Manager", company: "Bizzabo Limited" },
+    { name: "David Miller", title: "Developer", company: "Bizzabo Limited" },
+    { name: "Jason Ozah", title: "Designer", company: "Bizzabo Limited" },
   ];
 
   // State to hold the search input and filtered contacts
   const [searchTerm, setSearchTerm] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
+  const [filterByName, setFilterByName] = useState(true);
+  const [filterByPosition, setFilterByPosition] = useState(false);
 
-  // Filter the contacts based on the search term
-  const filteredContacts = networkContacts.filter(
-    (contact) =>
-      contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      contact.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      contact.company.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter the contacts based on the search term and selected filters
+  const filteredContacts = networkContacts.filter((contact) => {
+    const nameMatches =
+      filterByName &&
+      contact.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const titleMatches =
+      filterByPosition &&
+      contact.title.toLowerCase().includes(searchTerm.toLowerCase());
+    return nameMatches || titleMatches;
+  });
 
   return (
-    <Box p={4}>
-     
+    <Box p={4} color={theme.colors.colorWorkSpace}>
       <Flex alignItems="center" mb={4}>
         {/* Search bar with Slider icon */}
         <InputGroup flex={1} height={12}>
           <InputLeftElement
             height="100%"
-            children={<MdSearch color="gray.400" size="26px" />}
+            children={
+              <MdSearch
+                color={theme.colors.darkGray}
+                size={theme.fontSizes["3xl"]}
+              />
+            }
           />
           <Input
             placeholder="Search for an attendee"
+            color={theme.colors.darkGray}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             height={12}
-            borderColor="gray.300"
-            _focus={{ borderColor: "purple.500" }}
             borderRadius="md"
+            _focus={{
+              borderColor: theme.colors.darkGray,
+              boxShadow: `0 0 3px 1px ${theme.colors.darkGray}`,
+            }}
+            transition="all 0.3s ease-in-out"
           />
         </InputGroup>
 
@@ -62,33 +80,62 @@ const Networking: React.FC = () => {
           icon={<LuSlidersHorizontal />}
           ml={4}
           boxSize={12}
-          background="#EFE7FD"
-          color="purple.600"
-          _hover={{ bg: "purple.500" }}
+          background={theme.colors.heroBgColor}
+          color={theme.colors.purpleTextColor}
+          _hover={{ bg: theme.colors.hamburgerMenuBgColor }}
           borderRadius="md"
+          onClick={() => setShowFilters(!showFilters)}
         />
       </Flex>
+
+      {/* Conditional rendering of filter options */}
+      {showFilters && (
+        <Box p={4} borderWidth="1px" borderRadius="md" boxShadow="md" mb={4}>
+          <Text fontWeight="bold" mb={2}>
+            Filter Options
+          </Text>
+          <Checkbox
+            isChecked={filterByName}
+            display="flex"
+            onChange={(e) => setFilterByName(e.target.checked)}
+            mr={3}
+          >
+            Filter by Name
+          </Checkbox>
+          <Checkbox
+            isChecked={filterByPosition}
+            onChange={(e) => setFilterByPosition(e.target.checked)}
+            mb={2}
+          >
+            Filter by Position
+          </Checkbox>
+        </Box>
+      )}
 
       {/* Display filtered contacts */}
       {filteredContacts.map((contact, index) => (
         <Flex
           key={index}
           p={4}
-          my={2}
           alignItems="center"
+          cursor="pointer"
           justifyContent="space-between"
-          borderWidth="1px"
-          borderRadius="md"
-          boxShadow="md"
-          _hover={{ bg: "gray.50" }}
+          borderBlockEndWidth="1px"
+          borderColor={theme.colors.primaryBorderColor}
+          _hover={{ backgroundColor: theme.colors.primaryBorderColor }}
+          transition="backgroundColor 0.3s ease-in-out"
         >
           <HStack spacing={4}>
-            <Icon as={MdPerson} boxSize={6} color="purple.600" />
+            <Icon
+              as={MdPerson}
+              boxSize={6}
+              color={theme.colors.purpleTextColor}
+            />
             <Box>
-              <Text fontWeight="bold" fontSize="lg">
+              <Text fontWeight="bold" fontSize={theme.fontSizes.md}>
                 {contact.name}
               </Text>
-              <Text fontSize="sm" color="gray.500">
+              <Text fontSize="sm" color={theme.colors.darkGray}>
                 {contact.title} @ {contact.company}
               </Text>
             </Box>
@@ -96,7 +143,7 @@ const Networking: React.FC = () => {
         </Flex>
       ))}
 
-      {/* Show this message if no contacts match the search term */}
+      {/* Show this message if no contacts matches the search term */}
       {filteredContacts.length === 0 && (
         <Box
           textAlign="center"

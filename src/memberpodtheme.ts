@@ -18,6 +18,7 @@ const theme = extendTheme({
     heroBgColor: "#EFE7FD", // Bright added this
     purpleTextColor: "#9B0EED", // Bright added this
     primaryBorderColor: "#D9D9D9", // Bright added this
+    darkGray: "#627D98", // Bright added this
   },
   fontSizes: {
     heading: "30px",

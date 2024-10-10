@@ -40,10 +40,10 @@ const Community: React.FC = () => {
                 fontSize={theme.fontSizes.sm}
                 color={theme.colors.purpleTextColor}
               >
-                {section.posts} posts{" "}
+                {section.posts} posts
                 <Text as="span" mx={1} color="#627D98">
                   •
-                </Text>{" "}
+                </Text>
                 {section.replies} replies
               </Text>
             </Box>
