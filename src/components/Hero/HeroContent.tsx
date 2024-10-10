@@ -13,6 +13,7 @@ import { MdLocationOn } from "react-icons/md";
 import { FaBars } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
 import HeroImage from "./images/CTY_event_banner.png";
+import { useState } from "react"; // Import useState
 
 /* Hero Figure Component */
 const HeroFigure: React.FC = () => {
@@ -74,6 +75,7 @@ const HeroFigure: React.FC = () => {
 const HeroTextContent: React.FC = () => {
   const theme = useTheme();
   const location = useLocation();
+  const [isExpanded, setIsExpanded] = useState(false); // State for toggling text
 
   // Array of event details with corresponding links
   const details = [
@@ -81,6 +83,12 @@ const HeroTextContent: React.FC = () => {
     { name: "Community", path: "/community" },
     { name: "Networking", path: "/networking" },
   ];
+
+  // full text, truncated text variables
+  const fullText =
+    "This is a song of thanks to the One who fights for us even in our weakness and sets us free to worship him. This song has been reviving us as a community.";
+
+  const truncatedText = fullText.slice(0, 80) + "...";
 
   return (
     <Box
@@ -97,10 +105,25 @@ const HeroTextContent: React.FC = () => {
         >
           The CTY Food Festival 2024
         </Heading>
-        <Text fontWeight="500" fontSize={theme.fontSizes.md} lineHeight="24px">
-          This is a song of thanks to the One who fights for us even in our
-          weakness and sets us free to worship him. This song has been reviving
-          us as a community. Read more
+        <Text fontSize={theme.fontSizes.md} lineHeight="24px">
+          {isExpanded ? fullText : truncatedText}
+          {/* Truncated text */}
+          <Text
+            as="span"
+            p={2}
+            cursor="pointer"
+            color={theme.colors.customBlue}
+            fontWeight="bold"
+            textDecoration="underline"
+            _hover={{ color: theme.colors.purpleTextColor }}
+            transition="color 300ms ease"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsExpanded(!isExpanded);
+            }}
+          >
+            {isExpanded ? "Read less" : "Read more"}
+          </Text>
         </Text>
       </Box>
 
@@ -132,6 +155,10 @@ const HeroTextContent: React.FC = () => {
                     ? theme.colors.purpleTextColor
                     : theme.colors.colorWorkSpace
                 }
+                _hover={{
+                  color: theme.colors.purpleTextColor,
+                }}
+                transition="color 300ms ease-in-out"
               >
                 {item.name}
               </Text>
