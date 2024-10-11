@@ -1,9 +1,9 @@
-import JasonImage from "../components/Networking/images/jason.png";
-import HarryImage from "../components/Networking/images/harry.png";
-import GeorgeImage from "../components/Networking/images/george.png";
-import FelixImage from "../components/Networking/images/felix.png";
-import RayBanImage from "../components/Networking/images/rayBan.png";
-import JasonTwoImage from "../components/Networking/images/jason2.png";
+import JasonImage from "../assets/images/jason.png";
+import HarryImage from "../assets/images/harry.png";
+import GeorgeImage from "../assets/images/george.png";
+import FelixImage from "../assets/images/felix.png";
+import RayBanImage from "../assets/images/rayBan.png";
+import JasonTwoImage from "../assets/images/jason2.png";
 
 const attendeeContacts = [
   {

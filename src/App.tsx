@@ -4,14 +4,14 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import Hero from "./components/Hero/HeroContent";
-import EventDetails from "./components/EventDetails/EventDetails";
-import Community from "./components/Community/Community";
-import Networking from "./components/Networking/Networking";
+import Hero from "./components/Hero";
+import EventDetails from "./components/EventDetails";
+import Community from "./components/Community";
+import Networking from "./components/Networking";
 
 function App() {
   return (
-    <Router >
+    <Router>
       <Hero />
       <Routes>
         <Route path="/" element={<Navigate to="/event-details" />} />

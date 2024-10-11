@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { LuSlidersHorizontal } from "react-icons/lu";
 import { MdSearch } from "react-icons/md";
-import attendeeContacts from "../../data/attendeeData";
+import attendeeContacts from "../data/attendeeData";
 
 const Networking: React.FC = () => {
   const theme = useTheme();
@@ -58,10 +58,10 @@ const Networking: React.FC = () => {
             height={12}
             borderRadius="md"
             _focus={{
-              borderColor: theme.colors.darkGray,
               boxShadow: `0 0 3px 1px ${theme.colors.darkGray}`,
+              border: "0",
             }}
-            transition="all 0.3s ease-in-out"
+            transition="boxShadow 0.2s ease-in-out"
           />
         </InputGroup>
 
