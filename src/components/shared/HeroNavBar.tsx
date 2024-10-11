@@ -19,14 +19,14 @@ const HeroNavBar: React.FC<HeroNavBarProps> = ({ details }) => {
   return (
     <Flex
       my={4}
-      alignItems={["center", "flex-start"]}
-      justifyContent={["center", "space-between"]}
+      alignItems="center"
+      justifyContent="space-between"
       flexWrap="wrap"
     >
       {details.map((item, index) => (
         <Box
           key={index}
-          width={["100%", "fit-content"]}
+          width="fit-content"
           textAlign="center"
           _hover={{
             cursor: "pointer",
