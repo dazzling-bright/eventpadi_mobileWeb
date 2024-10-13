@@ -8,10 +8,11 @@ import {
   useTheme,
 } from "@chakra-ui/react";
 import { MdLocationOn, MdOutlineDateRange } from "react-icons/md";
-import HeroImage from "../assets/images/CTY_event_banner.png";
+import HeroImagePng from "../assets/images/CTY_event_banner.png";
+import HeroImageWebP from "../assets/images/CTY_event_banner.webp";
+import HamburgerMenu from "./shared/HamburgerMenu";
 import { useState } from "react";
 import HeroNavBar from "./shared/HeroNavBar";
-import HamburgerMenu from "./shared/HamburgerMenu";
 
 /* Hero Figure Component */
 const HeroFigure: React.FC = () => {
@@ -23,16 +24,21 @@ const HeroFigure: React.FC = () => {
 
   return (
     <Box position="relative" overflow="hidden" maxHeight="700px">
-      <Image
-        src={HeroImage}
-        alt="CTY Food Festival, Akwa-Ibom Edition to be held in Lagos state. Admission is Free"
-        objectFit="cover"
-        width="100%"
-        height="auto"
-        maxH="700px"
-        loading="lazy"
-        decoding="async"
-      />
+      <picture>
+        <source srcSet={HeroImageWebP} type="image/webp" />
+        <source srcSet={HeroImagePng} type="image/png" />
+        <Image
+          src={HeroImagePng}
+          alt="CTY Food Festival, Akwa-Ibom Edition to be held in Lagos state. Admission is Free"
+          objectFit="cover"
+          width="100%"
+          height="auto"
+          maxH="700px"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+
       <HamburgerMenu onClick={handleMenuClick} />
 
       <Flex

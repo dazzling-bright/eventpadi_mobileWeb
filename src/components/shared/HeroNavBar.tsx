@@ -23,11 +23,12 @@ const HeroNavBar: React.FC<HeroNavBarProps> = ({ details }) => {
       justifyContent="space-between"
       overflowX="auto"
       whiteSpace="nowrap"
+      scrollBehavior="smooth"
       sx={{
-        // Hide scrollbar visually but still allow scrolling
-        "::-webkit-scrollbar": { display: "none" },
-        "-ms-overflow-style": "none",
-        "scrollbar-width": "none",
+        "::-webkit-scrollbar": { display: "none" }, // Hide scrollbar visually but allow scrolling
+        "-ms-overflow-style": "none", // Hide scrollbar in IE/Edge
+        "scrollbar-width": "none", // Hide scrollbar in Firefox
+        touchAction: "pan-x", // Allow smooth horizontal scrolling
       }}
     >
       {details.map((item, index) => {
@@ -39,24 +40,26 @@ const HeroNavBar: React.FC<HeroNavBarProps> = ({ details }) => {
             width="fit-content"
             textAlign="center"
             flexShrink={0}
-            _hover={{
-              cursor: "pointer",
-            }}
+            _hover={{ cursor: "pointer" }}
           >
             <Link to={item.path}>
-              <Flex alignItems="center">
+              <Flex
+                alignItems="center"
+                p={2}
+                transition="all 300ms ease-in-out"
+                _hover={{ backgroundColor: theme.colors.hoverBgColor }}
+                _focus={{ outline: "none" }}
+                _active={{ transform: "scale(0.98)" }}
+              >
                 <Text
                   fontWeight="bold"
                   fontSize={theme.fontSizes.md}
-                  p={4}
+                  px={4}
                   color={
                     isActiveTab
                       ? theme.colors.purpleTextColor
                       : theme.colors.colorWorkSpace
                   }
-                  _hover={{
-                    color: theme.colors.purpleTextColor,
-                  }}
                   transition="color 300ms ease-in-out"
                 >
                   {item.name}
@@ -66,8 +69,7 @@ const HeroNavBar: React.FC<HeroNavBarProps> = ({ details }) => {
                 <Box
                   width="6px"
                   height="6px"
-                  aspectRatio={1}
-                  ml={2}
+                  ml={1}
                   backgroundColor={isActiveTab ? "red" : "transparent"}
                   borderRadius="full"
                   transition="background-color 0.3s ease"
