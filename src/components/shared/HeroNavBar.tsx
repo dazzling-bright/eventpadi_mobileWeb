@@ -69,7 +69,6 @@ const HeroNavBar: React.FC<HeroNavBarProps> = ({ details }) => {
                 <Box
                   width="6px"
                   height="6px"
-                  ml={1}
                   backgroundColor={isActiveTab ? "red" : "transparent"}
                   borderRadius="full"
                   transition="background-color 0.3s ease"
