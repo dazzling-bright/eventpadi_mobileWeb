@@ -21,7 +21,7 @@ const Community: React.FC = () => {
           _hover={{ bg: theme.colors.primaryBorderColor }}
         >
           <HStack spacing={4}>
-            <Box fontWeight="bold">
+            <Box fontWeight="600">
               <Text
                 fontSize={theme.fontSizes.sm}
                 textTransform="uppercase"

@@ -58,8 +58,8 @@ const Networking: React.FC = () => {
             height={12}
             borderRadius="md"
             _focus={{
-              boxShadow: `0 0 3px 1px ${theme.colors.darkGray}`,
-              border: "0",
+              boxShadow: `0 0 0 0 ${theme.colors.darkGray}`, //added this line to overwrite chakra built box-shadow effect
+              border: `1px solid ${theme.colors.darkGray}`,
             }}
             transition="boxShadow 0.2s ease-in-out"
           />
@@ -145,7 +145,7 @@ const Networking: React.FC = () => {
           boxShadow="md"
           py={8}
         >
-          <Text fontWeight="bold" fontSize="lg">
+          <Text fontWeight="600" fontSize={theme.fontSizes.sm}>
             No Contact Found. Search with different text
           </Text>
         </Box>
