@@ -45,11 +45,11 @@ const HeroNavBar: React.FC<HeroNavBarProps> = ({ details }) => {
             <Link to={item.path}>
               <Flex
                 alignItems="center"
+                minW="120px"
                 p={2}
                 transition="all 300ms ease-in-out"
                 _hover={{ backgroundColor: theme.colors.hoverBgColor }}
                 _focus={{ outline: "none" }}
-                _active={{ transform: "scale(0.98)" }}
               >
                 <Text
                   fontWeight="bold"
