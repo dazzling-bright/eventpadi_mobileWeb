@@ -13,8 +13,9 @@ const BorderIndicator: React.FC<{ path: string }> = ({ path }) => {
           ? theme.colors.purpleTextColor
           : "transparent"
       }
+      opacity={location.pathname === path ? 1 : 0}
       borderRadius="20px"
-      transition="background-color 0.3s"
+      transition="all 500ms ease-in-out"
     />
   );
 };

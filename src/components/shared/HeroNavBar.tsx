@@ -28,7 +28,7 @@ const HeroNavBar: React.FC<HeroNavBarProps> = ({ details }) => {
         "::-webkit-scrollbar": { display: "none" }, // Hide scrollbar visually but allow scrolling
         "-ms-overflow-style": "none", // Hide scrollbar in IE/Edge
         "scrollbar-width": "none", // Hide scrollbar in Firefox
-        touchAction: "pan-x", // Allow smooth horizontal scrolling
+        touchAction: "pan-x", // Allow smooth horizontal scrolling on mobile
       }}
     >
       {details.map((item, index) => {
@@ -46,20 +46,25 @@ const HeroNavBar: React.FC<HeroNavBarProps> = ({ details }) => {
               <Flex
                 alignItems="center"
                 minW="120px"
-                p={2}
                 transition="all 300ms ease-in-out"
-                _hover={{ backgroundColor: theme.colors.hoverBgColor }}
-                _focus={{ outline: "none" }}
+                _hover={{
+                  backgroundColor: theme.colors.hoverBgColor,
+                  color: theme.colors.purpleTextColor,
+                }}
               >
                 <Text
                   fontWeight="bold"
                   fontSize={theme.fontSizes.md}
                   px={4}
+                  py={2}
                   color={
                     isActiveTab
                       ? theme.colors.purpleTextColor
                       : theme.colors.colorWorkSpace
                   }
+                  _hover={{
+                    color: theme.colors.purpleTextColor,
+                  }}
                   transition="color 300ms ease-in-out"
                 >
                   {item.name}
@@ -70,8 +75,10 @@ const HeroNavBar: React.FC<HeroNavBarProps> = ({ details }) => {
                   width="6px"
                   height="6px"
                   backgroundColor={isActiveTab ? "red" : "transparent"}
+                  opacity={isActiveTab ? 1 : 0}
                   borderRadius="full"
-                  transition="background-color 0.3s ease"
+                  mr={2}
+                  transition="all 300ms ease-in-out"
                 />
               </Flex>
             </Link>

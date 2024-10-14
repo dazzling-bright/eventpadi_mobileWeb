@@ -3,6 +3,7 @@ import Hero from "./components/Hero";
 import EventDetails from "./components/EventDetails";
 import Community from "./components/Community";
 import Networking from "./components/Networking";
+import Sponsors from "./pages/Sponsors";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
         <Networking />
       </>
     ),
+  },
+  {
+    path: "/sponsors",
+    element: <Sponsors />,
   },
 ]);
 
