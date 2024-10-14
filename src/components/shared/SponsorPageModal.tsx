@@ -27,6 +27,35 @@ interface SponsorModalProps {
   onClose: () => void;
 }
 
+// Define social media links data
+const socialMediaLinks = [
+  {
+    label: "Facebook",
+    icon: <FaFacebook />,
+    url: "https://www.facebook.com",
+  },
+  {
+    label: "Twitter",
+    icon: <FaTwitter />,
+    url: "https://www.twitter.com",
+  },
+  {
+    label: "Instagram",
+    icon: <FaInstagram />,
+    url: "https://www.instagram.com",
+  },
+  {
+    label: "LinkedIn",
+    icon: <FaLinkedin />,
+    url: "https://www.linkedin.com",
+  },
+  {
+    label: "Reddit",
+    icon: <FaReddit />,
+    url: "https://www.reddit.com",
+  },
+];
+
 const SponsorModal: React.FC<SponsorModalProps> = ({ sponsor, onClose }) => {
   const theme = useTheme();
   if (!sponsor) return null;
@@ -79,7 +108,7 @@ const SponsorModal: React.FC<SponsorModalProps> = ({ sponsor, onClose }) => {
           Brad is a corporate vice president at Microsoft leading the
           development of windows Azure Storage in 2006. Choose a name that
           conveys the community's purpose to members. Choose a name that conveys
-          the community's purpose to members.Choose a name that conveys the
+          the community's purpose to members. Choose a name that conveys the
           community's purpose to members... <Text as="span">Read more</Text>
         </Text>
       </Box>
@@ -88,90 +117,34 @@ const SponsorModal: React.FC<SponsorModalProps> = ({ sponsor, onClose }) => {
         <Heading as="h3" fontSize={theme.fontSizes.lg} my={2}>
           Contact Information
         </Heading>
-        {SponsorContactInfo.map((contact, index) => {
-          return (
-            <Flex justify="space-between" my={2} key={index}>
-              <Text>{contact.label}</Text>
-              <Text>{contact.value}</Text>
-            </Flex>
-          );
-        })}
+        {SponsorContactInfo.map((contact, index) => (
+          <Flex justify="space-between" my={2} key={index}>
+            <Text>{contact.label}</Text>
+            <Text>{contact.value}</Text>
+          </Flex>
+        ))}
       </Box>
 
       <Box py={4}>
         <Heading as="h3">Social Media Links</Heading>
         <Flex justify="space-around" my={2}>
-          <IconButton
-            as="a"
-            href="https://www.facebook.com"
-            target="_blank"
-            aria-label="Facebook"
-            icon={<FaFacebook />}
-            color={theme.colors.purpleTextColor}
-            bg={theme.colors.hamburgerMenu}
-            borderRadius="full"
-            _hover={{
-              bg: theme.colors.purpleTextColor,
-              color: theme.colors.white,
-            }}
-          />
-          <IconButton
-            as="a"
-            href="https://www.twitter.com"
-            target="_blank"
-            aria-label="Twitter"
-            icon={<FaTwitter />}
-            color={theme.colors.purpleTextColor}
-            bg={theme.colors.hamburgerMenu}
-            borderRadius="full"
-            _hover={{
-              bg: theme.colors.purpleTextColor,
-              color: theme.colors.white,
-            }}
-          />
-          <IconButton
-            as="a"
-            href="https://www.instagram.com"
-            target="_blank"
-            aria-label="Instagram"
-            icon={<FaInstagram />}
-            color={theme.colors.purpleTextColor}
-            bg={theme.colors.hamburgerMenu}
-            borderRadius="full"
-            _hover={{
-              bg: theme.colors.purpleTextColor,
-              color: theme.colors.white,
-            }}
-          />
-          <IconButton
-            as="a"
-            href="https://www.linkedin.com"
-            target="_blank"
-            aria-label="LinkedIn"
-            icon={<FaLinkedin />}
-            color={theme.colors.purpleTextColor}
-            bg={theme.colors.hamburgerMenu}
-            borderRadius="full"
-            _hover={{
-              bg: theme.colors.purpleTextColor,
-              color: theme.colors.white,
-            }}
-          />
-
-          <IconButton
-            as="a"
-            href="https://www.reddit.com"
-            target="_blank"
-            aria-label="Reddit"
-            icon={<FaReddit />}
-            color={theme.colors.purpleTextColor}
-            bg={theme.colors.hamburgerMenu}
-            borderRadius="full"
-            _hover={{
-              bg: theme.colors.purpleTextColor,
-              color: theme.colors.white,
-            }}
-          />
+          {socialMediaLinks.map((link) => (
+            <IconButton
+              key={link.label}
+              as="a"
+              href={link.url}
+              target="_blank"
+              aria-label={link.label}
+              icon={link.icon}
+              color={theme.colors.purpleTextColor}
+              bg={theme.colors.hamburgerMenu}
+              borderRadius="full"
+              _hover={{
+                bg: theme.colors.purpleTextColor,
+                color: theme.colors.white,
+              }}
+            />
+          ))}
         </Flex>
       </Box>
     </Box>

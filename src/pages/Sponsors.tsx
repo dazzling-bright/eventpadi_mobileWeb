@@ -23,6 +23,7 @@ import {
   handleCloseModal,
   Sponsor,
 } from "../functions/sponsorFunction";
+import { useNavigate } from "react-router-dom";
 
 // sponsor data
 const sponsors: Sponsor[] = [
@@ -74,6 +75,7 @@ const Sponsors: React.FC = () => {
   const [currentSponsor, setCurrentSponsor] = useState<Sponsor | null>(null);
 
   const theme = useTheme();
+  const navigate = useNavigate();
 
   // Filter sponsors based on selected value
   const filteredSponsors = selectedSponsor
@@ -98,6 +100,7 @@ const Sponsors: React.FC = () => {
           bg={theme.colors.hamburgerMenuBgColor}
           borderRadius="full"
           mr={4}
+          onClick={() => navigate(-1)}
         />
         <Heading as="h1" fontSize={theme.fontSizes.lg} flex="1">
           Our Sponsors
