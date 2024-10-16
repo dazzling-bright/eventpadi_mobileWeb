@@ -1,5 +1,5 @@
 import { Box, Text, Flex, Icon, HStack, useTheme } from "@chakra-ui/react";
-import { FaChevronRight } from "react-icons/fa";
+import { MdChevronRight } from "react-icons/md";
 import communitySections from "../data/communityData";
 
 const Community: React.FC = () => {
@@ -49,8 +49,9 @@ const Community: React.FC = () => {
           </HStack>
 
           <Icon
-            as={FaChevronRight}
-            boxSize={4}
+            as={MdChevronRight}
+            boxSize={8}
+            alignSelf="flex-start"
             color={theme.colors.purpleTextColor}
           />
         </Flex>

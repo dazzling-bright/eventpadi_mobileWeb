@@ -1,7 +1,9 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Flex, Box, Text, useTheme } from "@chakra-ui/react";
-import BorderIndicator from "./BorderIndicator";
+import { useTheme } from "@chakra-ui/react";
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import EventDetails from "../EventDetails";
+import Community from "../Community";
+import Networking from "../Networking";
 
 interface Detail {
   name: string;
@@ -14,81 +16,80 @@ interface HeroNavBarProps {
 
 const HeroNavBar: React.FC<HeroNavBarProps> = ({ details }) => {
   const theme = useTheme();
-  const location = useLocation();
 
   return (
-    <Flex
-      my={4}
-      alignItems="center"
-      justifyContent="space-between"
-      overflowX="auto"
-      whiteSpace="nowrap"
-      scrollBehavior="smooth"
-      sx={{
-        "::-webkit-scrollbar": { display: "none" }, // Hide scrollbar visually but allow scrolling
-        "-ms-overflow-style": "none", // Hide scrollbar in IE/Edge
-        "scrollbar-width": "none", // Hide scrollbar in Firefox
-        touchAction: "pan-x", // Allow smooth horizontal scrolling on mobile
-      }}
-    >
-      {details.map((item, index) => {
-        const isActiveTab: boolean = location.pathname === item.path;
-
-        return (
-          <Box
-            key={index}
-            width="fit-content"
-            textAlign="center"
+    <Tabs position="relative" variant="unstyled" my={4} defaultIndex={0}>
+      {/* Scrollable TabList with snapping behavior */}
+      <TabList
+        display="flex"
+        overflowX="auto"
+        scrollBehavior="smooth"
+        justifyContent="space-between"
+        css={{
+          scrollSnapType: "x mandatory",
+          WebkitOverflowScrolling: "touch",
+          "&::-webkit-scrollbar": {
+            display: "none", // Hide scrollbar for better UX
+          },
+        }}
+      >
+        {details.map((item, index) => (
+          <Tab
+            fontWeight="bold"
+            position="relative"
             flexShrink={0}
-            _hover={{ cursor: "pointer" }}
+            py={3}
+            px={4}
+            fontSize={theme.fontSizes.md}
+            color={theme.colors.colorWorkSpace}
+            transition="color 0.3s ease, transform 0.3s ease"
+            _hover={{
+              color: theme.colors.purpleTextColor,
+            }}
+            _selected={{
+              color: theme.colors.purpleTextColor,
+              _before: {
+                content: '""',
+                position: "absolute",
+                bottom: "0",
+                right: "0",
+                width: "100%",
+                height: "6px",
+                borderRadius: "7px",
+                bg: theme.colors.purpleTextColor,
+                transition: "background-color 0.3s ease",
+              },
+              // Red dot indicator
+              _after: {
+                content: '""',
+                marginInlineStart: "8px",
+                transform: "translateY(50%)",
+                width: "6px",
+                height: "6px",
+                borderRadius: "full",
+                bg: "red",
+                transition: "transform 0.3s ease",
+              },
+            }}
+            key={index}
           >
-            <Link to={item.path}>
-              <Flex
-                alignItems="center"
-                minW="120px"
-                transition="all 300ms ease-in-out"
-                _hover={{
-                  backgroundColor: theme.colors.hoverBgColor,
-                  color: theme.colors.purpleTextColor,
-                }}
-              >
-                <Text
-                  fontWeight="bold"
-                  fontSize={theme.fontSizes.md}
-                  px={4}
-                  py={2}
-                  color={
-                    isActiveTab
-                      ? theme.colors.purpleTextColor
-                      : theme.colors.colorWorkSpace
-                  }
-                  _hover={{
-                    color: theme.colors.purpleTextColor,
-                  }}
-                  transition="color 300ms ease-in-out"
-                >
-                  {item.name}
-                </Text>
+            {item.name}
+          </Tab>
+        ))}
+      </TabList>
 
-                {/** Red dot indicator */}
-                <Box
-                  width="6px"
-                  height="6px"
-                  backgroundColor={isActiveTab ? "red" : "transparent"}
-                  opacity={isActiveTab ? 1 : 0}
-                  borderRadius="full"
-                  mr={2}
-                  transition="all 300ms ease-in-out"
-                />
-              </Flex>
-            </Link>
-
-            {/* Border below the link */}
-            <BorderIndicator path={item.path} />
-          </Box>
-        );
-      })}
-    </Flex>
+      <TabPanels bg={theme.colors.white}>
+        <TabPanel p={0}>
+          <EventDetails />
+        </TabPanel>
+        <TabPanel p={0}>
+          <Community />
+        </TabPanel>
+        <TabPanel p={0}>
+          <Networking />
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
   );
 };
 

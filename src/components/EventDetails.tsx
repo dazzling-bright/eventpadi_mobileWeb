@@ -7,7 +7,7 @@ const EventDetails: React.FC = () => {
   const theme = useTheme();
 
   return (
-    <Box p={4}>
+    <Box py={4}>
       {eventDetails.map((item, index) => (
         <Link to={item.hrefLink}>
           <Flex
@@ -39,7 +39,12 @@ const EventDetails: React.FC = () => {
                 </Text>
               </Box>
             </Flex>
-            <MdChevronRight size={24} color={theme.colors.purpleTextColor} />
+            <Icon
+              as={MdChevronRight}
+              boxSize={8}
+              alignSelf="flex-start"
+              color={theme.colors.purpleTextColor}
+            />
           </Flex>
         </Link>
       ))}

@@ -87,11 +87,7 @@ const HeroTextContent: React.FC = () => {
   const truncatedText = fullText.slice(0, 80) + "...";
 
   return (
-    <Box
-      px={4}
-      color={theme.colors.colorWorkSpace}
-      bg={theme.colors.heroBgColor}
-    >
+    <Box color={theme.colors.colorWorkSpace} bg={theme.colors.heroBgColor}>
       <Box px={4}>
         <Heading
           as="h2"
