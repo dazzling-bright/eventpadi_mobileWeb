@@ -1,4 +1,3 @@
-// pages/Sponsors.tsx
 import React, { useState } from "react";
 import {
   Box,
@@ -8,71 +7,24 @@ import {
   Image,
   Text,
   Flex,
-  useTheme,
   Icon,
+  useTheme,
+  useDisclosure,
+  Card,
+  CardBody,
 } from "@chakra-ui/react";
 import { MdChevronLeft, MdSearch } from "react-icons/md";
-import DangoteIndustryImage from "../assets/sponsor-images/dangotes-pastries.png";
-import GoldenPennyImage from "../assets/sponsor-images/golden-penny.png";
-import AutoFixerImage from "../assets/sponsor-images/autofixer.png";
-import BusinessmanImage from "../assets/sponsor-images/businessman.png";
 import SponsorModal from "../components/shared/SponsorPageModal";
-import {
-  handleSelectChange,
-  handleSponsorClick,
-  handleCloseModal,
-  Sponsor,
-} from "../functions/sponsorFunction";
+import { handleSelectChange } from "../functions/sponsorFunction";
 import { useNavigate } from "react-router-dom";
-
-// sponsor data
-const sponsors: Sponsor[] = [
-  {
-    name: "Dangote Industries",
-    image: DangoteIndustryImage,
-    website: "https://www.dangote.com",
-  },
-  {
-    name: "Golden Penny",
-    image: GoldenPennyImage,
-    website: "https://www.goldenpenny.com",
-  },
-  {
-    name: "AutoFixer",
-    image: AutoFixerImage,
-    website: "https://www.autofixer.com",
-  },
-  {
-    name: "Businessman",
-    image: BusinessmanImage,
-    website: "https://www.goldenpenny.com",
-  },
-  {
-    name: "Golden Penny",
-    image: GoldenPennyImage,
-    website: "https://www.goldenpenny.com",
-  },
-  {
-    name: "AutoFixer",
-    image: AutoFixerImage,
-    website: "https://www.autofixer.com",
-  },
-  {
-    name: "Businessman",
-    image: BusinessmanImage,
-    website: "https://www.goldenpenny.com",
-  },
-  {
-    name: "Golden Penny",
-    image: GoldenPennyImage,
-    website: "https://www.goldenpenny.com",
-  },
-];
+import { sponsors, Sponsor } from "../data/sponsorData";
 
 const Sponsors: React.FC = () => {
   const [selectedSponsor, setSelectedSponsor] = useState<string>("");
-  const [showModal, setShowModal] = useState(false);
   const [currentSponsor, setCurrentSponsor] = useState<Sponsor | null>(null);
+
+  // useDisclosure hook to manage modal state
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const theme = useTheme();
   const navigate = useNavigate();
@@ -119,6 +71,7 @@ const Sponsors: React.FC = () => {
         <Select
           placeholder="Select a sponsor..."
           value={selectedSponsor}
+          variant="outline"
           cursor="pointer"
           onChange={(e) => handleSelectChange(e, setSelectedSponsor)}
           aria-label="Select a sponsor"
@@ -136,48 +89,53 @@ const Sponsors: React.FC = () => {
       {/* Sponsors Grid Section */}
       <Grid
         templateColumns={{ base: "1fr", sm: "repeat(2, 1fr)" }}
-        gap={4}
+        gap={6}
+        marginBlockEnd={8}
         px={4}
         tabIndex={0}
       >
         {filteredSponsors.length > 0 ? (
           filteredSponsors.map((sponsor, index) => (
-            <Box
+            <Card
               key={index}
               borderRadius="2xl"
               role="group"
               cursor="pointer"
+              border={`1px solid ${theme.colors.hamburgerMenuBgColor}`}
               _hover={{
-                boxShadow: `0 0 5px 2px ${theme.colors.hamburgerMenuBgColor}`,
+                boxShadow: `0 0 5px 5px ${theme.colors.hamburgerMenuBgColor}`,
               }}
               transition="boxShadow 300ms ease-in-out"
               tabIndex={0}
               aria-label={`${sponsor.name} details`}
-              onClick={() =>
-                handleSponsorClick(sponsor, setCurrentSponsor, setShowModal)
-              }
+              onClick={() => {
+                setCurrentSponsor(sponsor);
+                onOpen(); // Opens the modal
+              }}
             >
-              <Image
-                borderRadius="2xl"
-                src={sponsor.image}
-                alt={`${sponsor.name} logo`}
-                maxH="150px"
-                w="100%"
-                objectFit="cover"
-              />
-              <Heading as="h3" size="md" textAlign="center" py={2}>
-                {sponsor.name}
-              </Heading>
-              <Box textAlign="center">
-                <a
-                  href={sponsor.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {sponsor.website}
-                </a>
-              </Box>
-            </Box>
+              <CardBody>
+                <Image
+                  borderRadius="2xl"
+                  src={sponsor.image}
+                  alt={`${sponsor.name} logo`}
+                  maxH="150px"
+                  w="100%"
+                  objectFit="cover"
+                />
+                <Heading as="h3" size="md" textAlign="center" py={2}>
+                  {sponsor.name}
+                </Heading>
+                <Text textAlign="center">
+                  <a
+                    href={sponsor.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {sponsor.website}
+                  </a>
+                </Text>
+              </CardBody>
+            </Card>
           ))
         ) : (
           <Text>No sponsors found.</Text>
@@ -185,10 +143,11 @@ const Sponsors: React.FC = () => {
       </Grid>
 
       {/* Sponsor Modal */}
-      {showModal && (
+      {currentSponsor && (
         <SponsorModal
           sponsor={currentSponsor}
-          onClose={() => handleCloseModal(setShowModal, setCurrentSponsor)}
+          isOpen={isOpen}
+          onClose={onClose}
         />
       )}
     </Box>

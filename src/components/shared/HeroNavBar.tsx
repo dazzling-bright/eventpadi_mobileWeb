@@ -39,7 +39,7 @@ const HeroNavBar: React.FC<HeroNavBarProps> = ({ details }) => {
             position="relative"
             flexShrink={0}
             py={3}
-            px={4}
+            px={2}
             fontSize={theme.fontSizes.md}
             color={theme.colors.colorWorkSpace}
             transition="color 0.3s ease, transform 0.3s ease"
