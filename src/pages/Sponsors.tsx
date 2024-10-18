@@ -13,11 +13,12 @@ import {
   Card,
   CardBody,
 } from "@chakra-ui/react";
-import { MdChevronLeft, MdSearch } from "react-icons/md";
+import { MdChevronLeft } from "react-icons/md";
 import SponsorModal from "../components/shared/SponsorPageModal";
 import { handleSelectChange } from "../functions/sponsorFunction";
 import { useNavigate } from "react-router-dom";
 import { sponsors, Sponsor } from "../data/sponsorData";
+import { CiSearch } from "react-icons/ci";
 
 const Sponsors: React.FC = () => {
   const [selectedSponsor, setSelectedSponsor] = useState<string>("");
@@ -57,12 +58,14 @@ const Sponsors: React.FC = () => {
         <Heading as="h1" fontSize={theme.fontSizes.lg} flex="1">
           Our Sponsors
         </Heading>
+
         <Icon
-          as={MdSearch}
+          as={CiSearch}
           boxSize={8}
-          borderRadius="full"
-          color={theme.colors.white}
-          _hover={{ bg: theme.colors.hamburgerMenuHoverColor }}
+          color="gray.300"
+          cursor="pointer"
+          _hover={{ color: "gray.200" }}
+          transition="color 300ms ease-in-out"
         />
       </Flex>
 
