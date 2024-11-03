@@ -14,10 +14,10 @@ import {
   CardBody,
 } from "@chakra-ui/react";
 import { MdChevronLeft } from "react-icons/md";
-import SponsorModal from "../components/shared/SponsorPageModal";
-import { handleSelectChange } from "../functions/sponsorFunction";
+import SponsorModal from "../../components/shared/SponsorPageModal";
+import { handleSelectChange } from "../../functions/sponsorFunction";
 import { useNavigate } from "react-router-dom";
-import { sponsors, Sponsor } from "../data/sponsorData";
+import { sponsors, Sponsor } from "../../data/sponsorData";
 import { CiSearch } from "react-icons/ci";
 
 const Sponsors: React.FC = () => {

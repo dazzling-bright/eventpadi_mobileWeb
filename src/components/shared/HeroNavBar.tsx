@@ -63,12 +63,12 @@ const HeroNavBar: React.FC<HeroNavBarProps> = ({ details }) => {
               _after: {
                 content: '""',
                 marginInlineStart: "8px",
-                transform: "translateY(50%)",
+                marginBlockEnd: "20%",
                 width: "6px",
                 height: "6px",
                 borderRadius: "full",
                 bg: "red",
-                transition: "transform 0.3s ease",
+                transition: " margin-block-end 0.3s ease-in-out",
               },
             }}
             key={index}
