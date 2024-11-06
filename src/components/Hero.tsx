@@ -10,9 +10,9 @@ import {
 import { MdLocationOn, MdOutlineDateRange } from "react-icons/md";
 import HeroImagePng from "../assets/images/CTY_event_banner.png";
 import HeroImageWebP from "../assets/images/CTY_event_banner.webp";
-import HamburgerMenu from "./shared/HamburgerMenu";
+import HamburgerMenu from "./reusable/HamburgerMenu";
 import { useState } from "react";
-import HeroNavBar from "./shared/HeroNavBar";
+import HeroNavBar from "./reusable/HeroNavBar";
 
 /* Hero Figure Component */
 const HeroFigure: React.FC = () => {

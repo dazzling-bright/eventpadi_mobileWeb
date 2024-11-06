@@ -12,6 +12,8 @@ import {
   useTheme,
   useToast,
   Link as ChakraLink,
+  PinInput,
+  PinInputField,
 } from "@chakra-ui/react";
 import { IoPerson } from "react-icons/io5";
 import { useState, useEffect } from "react";
@@ -51,6 +53,7 @@ const ResetPassword: React.FC = () => {
     email_phone: "",
   });
   const [timer, setTimer] = useState(47);
+  const [isLoading, setIsLoading] = useState(false); // Loading state for button
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("resetEmail");
@@ -79,9 +82,17 @@ const ResetPassword: React.FC = () => {
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
+  const handleOTPChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, otp: value }));
+  };
+
   const mutation = useMutation({
     mutationFn: resetPassword,
+    onMutate: () => {
+      setIsLoading(true); // Set loading to true when the mutation starts
+    },
     onSuccess: () => {
+      setIsLoading(false); // Stop loading when mutation is successful
       toast({
         title: "Password reset successful!",
         description: "You can now log in with your new password.",
@@ -92,6 +103,7 @@ const ResetPassword: React.FC = () => {
       navigate("/sign-in");
     },
     onError: (error: any) => {
+      setIsLoading(false); // Stop loading if there's an error
       toast({
         title: "Error",
         description: error.response?.data?.message || "Password reset failed.",
@@ -118,14 +130,10 @@ const ResetPassword: React.FC = () => {
   };
 
   const handleResend = () => {
-    setTimer(47);
-    toast({
-      title: "Verification OTP resent",
-      description: "Check your email for a new OTP.",
-      status: "info",
-      duration: 3000,
-      isClosable: true,
-    });
+    setTimer(30);
+    alert(
+      "Unable to make an API request at the moment. The fault is from us not you"
+    );
   };
 
   return (
@@ -170,12 +178,18 @@ const ResetPassword: React.FC = () => {
         <VStack spacing={4} align="stretch">
           <FormControl id="otp" isRequired>
             <FormLabel>Verification Code</FormLabel>
-            <Input
-              type="text"
-              placeholder="Enter your verification code"
-              value={formData.otp}
-              onChange={handleChange}
-            />
+            <Flex justifyContent="space-around">
+              <PinInput
+                size="lg"
+                value={formData.otp} // Set the value to OTP
+                onChange={handleOTPChange}
+              >
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+              </PinInput>
+            </Flex>
           </FormControl>
           <FormControl id="password" isRequired>
             <FormLabel>Enter New Password</FormLabel>
@@ -197,14 +211,15 @@ const ResetPassword: React.FC = () => {
           </FormControl>
 
           <Text fontSize="sm" color="gray.500" align="center">
-            Did not get the code?{" "}
+            Did not get the code?
             <ChakraLink
               as="button"
+              mx={2}
               color={theme.colors?.customBlue || "blue.500"}
               onClick={handleResend}
               disabled={timer > 0}
             >
-              Resend in {timer > 0 ? `${timer} seconds` : "now"}
+              Resend {timer > 0 ? `in ${timer} seconds` : "now"}
             </ChakraLink>
           </Text>
           <Flex gap={6}>
@@ -216,10 +231,20 @@ const ResetPassword: React.FC = () => {
               border="2px"
               borderColor="purple"
               onClick={() => navigate(-1)}
+              loadingText="Previous"
+              isDisabled={isLoading} // Disable the button while loading
             >
               Previous
             </Button>
-            <Button type="submit" colorScheme="purple" width="full" mt={4}>
+            <Button
+              type="submit"
+              colorScheme="purple"
+              width="full"
+              mt={4}
+              isLoading={isLoading}
+              isDisabled={isLoading}
+              loadingText="Resetting..."
+            >
               Reset Password
             </Button>
           </Flex>

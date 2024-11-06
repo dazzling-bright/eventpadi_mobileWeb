@@ -13,15 +13,15 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { IoPerson } from "react-icons/io5";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
+import PasswordInput from "../../components/reusable/PasswordInput";
 
 // Define the login data type
 interface LoginData {
   email: string;
-  password: string;
   method: string;
 }
 
@@ -29,7 +29,9 @@ const api = axios.create({
   baseURL: "https://membscribe-staging.onrender.com",
 });
 
-const loginUser = async (loginData: LoginData): Promise<any> => {
+const loginUser = async (
+  loginData: LoginData & { password: string }
+): Promise<any> => {
   const payload = {
     email: loginData.email,
     password: loginData.password,
@@ -44,23 +46,30 @@ const SignIn: React.FC = () => {
   const toast = useToast();
   const navigate = useNavigate();
 
-  // Retrieve data from localStorage or set default values to ensure data persistence
+  // function to get the email from the localStorage
+  const getRegisteredEmail = () => {
+    const formData = localStorage.getItem("formData");
+    if (formData) {
+      const formDataObject = JSON.parse(formData);
+      return formDataObject.email || "";
+    }
+    return "";
+  };
+
+  // Initialize login data (exclude password)
   const [loginData, setLoginData] = useState<LoginData>({
-    email: localStorage.getItem("email") || "",
-    password: localStorage.getItem("password") || "",
+    email: getRegisteredEmail(),
     method: "password",
   });
-
-  useEffect(() => {
-    // Save to localStorage whenever loginData changes
-    localStorage.setItem("email", loginData.email);
-    localStorage.setItem("password", loginData.password);
-  }, [loginData]);
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // Mutation for logging in
   const mutation = useMutation({
     mutationFn: loginUser,
+    onMutate: () => setLoading(true), // Set loading to true when mutation starts
     onSuccess: () => {
+      setLoading(false); // Set loading to false when mutation succeeds
       toast({
         title: "Login successful!",
         description: `Welcome back!`,
@@ -68,10 +77,12 @@ const SignIn: React.FC = () => {
         duration: 3000,
         isClosable: true,
       });
-
+      // Clear the formData localStorage after successfully logging in
+      localStorage.removeItem("formData");
       navigate("/home");
     },
     onError: (error: any) => {
+      setLoading(false); // Set loading to false when mutation fails
       toast({
         title: "Login failed",
         description: error.response?.data?.message || "Unable to log in.",
@@ -82,16 +93,21 @@ const SignIn: React.FC = () => {
     },
   });
 
-  // Handle input change
+  // Handle input changes for email and password separately
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setLoginData((prev) => ({ ...prev, [id]: value }));
+    if (id === "email") {
+      setLoginData((prev) => ({ ...prev, email: value }));
+      localStorage.setItem("email", value);
+    } else if (id === "password") {
+      setPassword(value);
+    }
   };
 
   // Handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutation.mutate(loginData);
+    mutation.mutate({ ...loginData, password });
   };
 
   return (
@@ -167,12 +183,7 @@ const SignIn: React.FC = () => {
           </FormControl>
           <FormControl id="password" isRequired>
             <FormLabel>Password</FormLabel>
-            <Input
-              type="password"
-              placeholder="Enter your password"
-              value={loginData.password}
-              onChange={handleChange}
-            />
+            <PasswordInput value={password} handleChange={handleChange} />
           </FormControl>
 
           <ChakraLink
@@ -185,12 +196,13 @@ const SignIn: React.FC = () => {
             Forgot Password?
           </ChakraLink>
 
-          {/* Submit Button */}
+          {/* Submit Button with loading spinner */}
           <Button
             type="submit"
             colorScheme="purple"
             width="full"
             mt={4}
+            isLoading={loading}
             loadingText="Signing In"
           >
             Sign In

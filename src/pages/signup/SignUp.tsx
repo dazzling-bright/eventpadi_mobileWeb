@@ -12,36 +12,30 @@ import {
   Link as ChakraLink,
   useTheme,
   useToast,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { IoPerson } from "react-icons/io5";
 import { useMutation } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import PasswordInput from "../../components/reusable/PasswordInput";
 
 interface UserData {
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
-  password: string;
   communities: null;
   is_password: boolean;
 }
 
 const api = axios.create({
-  baseURL: "https://membscribe-staging.onrender.com/auth/api/v1/",
+  baseURL: "https://membscribe-staging.onrender.com",
 });
 
-const registerUser = async (userData: UserData): Promise<any> => {
+const registerUser = async (
+  userData: UserData & { password: string }
+): Promise<any> => {
   const payload = {
     first_name: userData.firstName,
     last_name: userData.lastName,
@@ -51,18 +45,17 @@ const registerUser = async (userData: UserData): Promise<any> => {
     communities: userData.communities,
     is_password: userData.is_password,
   };
-  const { data } = await api.post("register/", payload);
+  const { data } = await api.post("/auth/api/v1/register/", payload);
   return data;
 };
 
 const SignUp: React.FC = () => {
   const theme = useTheme();
   const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
 
-  // Initialize form data state
+  // Initialize form data state (exclude password and confirm password from localStorage)
   const [formData, setFormData] = useState<UserData>(() => {
-    // Load initial data from localStorage if available
     const savedData = localStorage.getItem("formData");
     return savedData
       ? JSON.parse(savedData)
@@ -71,31 +64,87 @@ const SignUp: React.FC = () => {
           lastName: "",
           email: "",
           phone: "",
-          password: "",
           communities: null,
           is_password: false,
         };
   });
 
-  // Save form data to localStorage on change
+  const [password, setPassword] = useState("");
+  const [loading, setIsLoading] = useState(false); // state to handle loading spinner
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordMatch, setPasswordMatch] = useState(true);
+
+  // Save form data to localStorage on change (excluding password and confirmPassword)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
+
+    // Create an updated form data object excluding password and confirmPassword
     const updatedFormData = { ...formData, [id]: value };
+
     setFormData(updatedFormData);
-    localStorage.setItem("formData", JSON.stringify(updatedFormData)); // Save to localStorage
+    localStorage.setItem("formData", JSON.stringify(updatedFormData));
+  };
+
+  // Handle password input change
+  const handlePasswordInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    setPassword(value);
+  };
+
+  // Handle confirm password field change
+  const handleConfirmPasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    setConfirmPassword(value);
+    setPasswordMatch(value === password); // Check if confirmPassword matches password
   };
 
   // Handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutation.mutate(formData);
+
+    if (password !== confirmPassword) {
+      toast({
+        title: "Error",
+        description: "Passwords do not match.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    // Prepare the form data for submission
+    const userData: UserData & { password: string } = {
+      ...formData,
+      password: password,
+    };
+    mutation.mutate(userData);
+  };
+
+  // Utility function to handle API errors and generate user-friendly messages
+  const handleErrorResponse = (error: any) => {
+    let errorMessage = "Registration failed";
+
+    // Handle error response using optional chaining
+    errorMessage = error?.response?.data?.errors?.email?.[0]
+      ? `he email address must be unique. ${error.response.data.errors.email}`
+      : error?.response?.data?.message || errorMessage; //  default message
+
+    return errorMessage;
   };
 
   // Mutation for registering user
   const mutation = useMutation({
     mutationFn: registerUser,
+
+    onMutate: () => setIsLoading(true),
     onSuccess: ({ data }) => {
       const userName = data?.first_name || "User";
+      setIsLoading(false);
       toast({
         title: "Registration successful!",
         description: `Welcome, ${userName}!`,
@@ -104,15 +153,14 @@ const SignUp: React.FC = () => {
         isClosable: true,
       });
 
-      // Clear localStorage on success
-      localStorage.removeItem("formData");
-
-      onOpen(); // Open the modal when registration is successful
+      navigate("/sign-in");
     },
     onError: (error: Error) => {
+      setIsLoading(false);
+      const errorMessage = handleErrorResponse(error);
       toast({
         title: "Error",
-        description: error.message || "Registration failed",
+        description: errorMessage || "Registration failed",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -221,25 +269,29 @@ const SignUp: React.FC = () => {
           </FormControl>
           <FormControl id="password" isRequired>
             <FormLabel>Password</FormLabel>
-            <Input
-              type="password"
-              placeholder="Create a password"
-              value={formData.password}
-              onChange={handleChange}
+            <PasswordInput
+              value={password}
+              handleChange={handlePasswordInputChange}
             />
           </FormControl>
 
+          {/* Confirm Password */}
+          <FormControl id="confirmPassword" isRequired>
+            <FormLabel>Confirm Password</FormLabel>
+            <PasswordInput
+              value={confirmPassword}
+              handleChange={handleConfirmPasswordChange}
+            />
+            {!passwordMatch && (
+              <Text color="red.500" fontSize="sm">
+                Passwords do not match.
+              </Text>
+            )}
+          </FormControl>
+
           {/* Terms and Conditions */}
-          <Checkbox
-            colorScheme="purple"
-            color="gray.600"
-            isChecked={formData.is_password}
-            onChange={(e) =>
-              setFormData({ ...formData, is_password: e.target.checked })
-            }
-            isRequired
-          >
-            By signing in, you acknowledge and accept our terms and conditions.
+          <Checkbox colorScheme="purple" color="gray.600" isRequired>
+            By signing up, you acknowledge and accept our terms and conditions.
             <ChakraLink
               color={theme.colors?.customBlue || "blue.500"}
               href="/terms"
@@ -250,28 +302,18 @@ const SignUp: React.FC = () => {
           </Checkbox>
 
           {/* Submit Button */}
-          <Button type="submit" colorScheme="purple" width="full" mt={4}>
+          <Button
+            type="submit"
+            colorScheme="purple"
+            width="full"
+            mt={4}
+            isLoading={loading}
+            isDisabled={!passwordMatch}
+          >
             Next
           </Button>
         </VStack>
       </form>
-
-      {/* Success Modal */}
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Registration Successful</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text>Thank you for signing up! Welcome to Eventpadi.</Text>
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
     </Box>
   );
 };

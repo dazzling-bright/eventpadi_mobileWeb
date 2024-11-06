@@ -31,11 +31,13 @@ const ForgotPassword: React.FC = () => {
   const theme = useTheme();
   const toast = useToast();
   const [email, setEmail] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false); // Loading state
   const navigate = useNavigate();
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true on form submission
     try {
       localStorage.setItem("resetEmail", email);
       await retrievePassword(email);
@@ -56,6 +58,8 @@ const ForgotPassword: React.FC = () => {
         duration: 3000,
         isClosable: true,
       });
+    } finally {
+      setLoading(false); // Set loading to false after API call completes
     }
   };
 
@@ -144,7 +148,14 @@ const ForgotPassword: React.FC = () => {
             >
               Previous
             </Button>
-            <Button colorScheme="purple" width="full" mt={4} type="submit">
+            <Button
+              colorScheme="purple"
+              width="full"
+              mt={4}
+              type="submit"
+              isLoading={loading} 
+              loadingText="Sending..."
+            >
               Next
             </Button>
           </Flex>
